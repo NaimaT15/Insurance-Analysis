@@ -20,3 +20,23 @@ def handle_missing_values(df):
         df[col] = df[col].fillna(median_value)
 
     return df
+import matplotlib.pyplot as plt
+
+def plot_numerical_histograms(df, numerical_columns):
+    for col in numerical_columns:
+        plt.figure(figsize=(8, 6))
+        plt.hist(df[col].dropna(), bins=20, color='blue', alpha=0.7)
+        plt.title(f'Distribution of {col}')
+        plt.xlabel(col)
+        plt.ylabel('Frequency')
+        plt.grid(True)
+        plt.show()
+def plot_categorical_bars(df, categorical_columns):
+    for col in categorical_columns:
+        plt.figure(figsize=(10, 6))
+        df[col].value_counts().plot(kind='bar', color='green', alpha=0.7)
+        plt.title(f'Distribution of {col}')
+        plt.xlabel(col)
+        plt.ylabel('Count')
+        plt.grid(True)
+        plt.show()
