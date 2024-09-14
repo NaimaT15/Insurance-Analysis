@@ -4,3 +4,4 @@
 # Ignore data directory and its contents
 data/
 
+dvc-storage
