@@ -1,7 +1,5 @@
 # Ignore virtual environment
-./venv
+/venv
 
-# Ignore data directory and its contents
-data/
-
-dvc-storage
+/data/MachineLearningRating_v3.csv  # Ignore the data file itself
+/dvc-storage  # Ignore the DVC local storage folder
