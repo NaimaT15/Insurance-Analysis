@@ -1,4 +1,7 @@
 import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
 
 def handle_missing_values(df):
     # Fill missing values for categorical columns with 'Unknown' or mode
@@ -20,7 +23,7 @@ def handle_missing_values(df):
         df[col] = df[col].fillna(median_value)
 
     return df
-import matplotlib.pyplot as plt
+
 
 def plot_numerical_histograms(df, numerical_columns):
     for col in numerical_columns:
@@ -40,3 +43,100 @@ def plot_categorical_bars(df, categorical_columns):
         plt.ylabel('Count')
         plt.grid(True)
         plt.show()
+
+       
+
+def plot_scatter_plots(df, x_col, y_col, category_col):
+    plt.figure(figsize=(10, 6))
+    plt.scatter(df[x_col], df[y_col], c=df[category_col], cmap='viridis', alpha=0.5)
+    plt.title(f'Scatter plot of {y_col} vs {x_col} (colored by {category_col})')
+    plt.xlabel(x_col)
+    plt.ylabel(y_col)
+    plt.colorbar(label=category_col)
+    plt.grid(True)
+    plt.show()
+
+
+def plot_correlation_matrix(df, numerical_columns):
+    plt.figure(figsize=(10, 8))
+    corr_matrix = df[numerical_columns].corr()
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, square=True)
+    plt.title('Correlation Matrix')
+    plt.show()
+
+def plot_cover_type_trends(df, geo_col, cover_col):
+    plt.figure(figsize=(12, 6))
+    sns.countplot(x=geo_col, hue=cover_col, data=df, palette='Set2')
+    plt.title(f'Comparison of {cover_col} across {geo_col}')
+    plt.xticks(rotation=45)
+    plt.xlabel(geo_col)
+    plt.ylabel('Count')
+    plt.legend(title=cover_col)
+    plt.grid(True)
+    plt.show()
+
+def plot_premium_trends(df, geo_col, premium_col):
+    plt.figure(figsize=(12, 6))
+    sns.boxplot(x=geo_col, y=premium_col, data=df, palette='Set1')
+    plt.title(f'Distribution of {premium_col} across {geo_col}')
+    plt.xticks(rotation=45)
+    plt.xlabel(geo_col)
+    plt.ylabel(premium_col)
+    plt.grid(True)
+    plt.show()
+
+def plot_auto_make_trends(df, geo_col, make_col):
+    plt.figure(figsize=(12, 6))
+    sns.countplot(x=geo_col, hue=make_col, data=df, palette='Set3')
+    plt.title(f'Comparison of {make_col} across {geo_col}')
+    plt.xticks(rotation=45)
+    plt.xlabel(geo_col)
+    plt.ylabel('Count')
+    plt.legend(title=make_col)
+    plt.grid(True)
+    plt.show()
+
+
+def plot_outliers_boxplot(df, numerical_columns):
+    for col in numerical_columns:
+        plt.figure(figsize=(8, 6))
+        sns.boxplot(x=df[col], palette="Set3")
+        plt.title(f'Box Plot for Outlier Detection in {col}')
+        plt.xlabel(col)
+        plt.grid(True)
+        plt.show()
+
+def plot_correlation_heatmap(df):
+    # Select only numerical columns
+    numerical_df = df.select_dtypes(include=['number'])
+    
+    # Calculate the correlation matrix for numerical columns only
+    plt.figure(figsize=(10, 8))
+    corr_matrix = numerical_df.corr()
+    sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, center=0)
+    plt.title('Correlation Heatmap of Numerical Features')
+    plt.show()
+
+def plot_stacked_bar(df, x_col, hue_col):
+    plt.figure(figsize=(12, 6))
+    df_grouped = df.groupby([x_col, hue_col]).size().unstack().fillna(0)
+    df_grouped.plot(kind='bar', stacked=True, colormap='Set3', figsize=(12, 8))
+    plt.title(f'Distribution of {hue_col} Across {x_col}')
+    plt.xlabel(x_col)
+    plt.ylabel('Count')
+    plt.xticks(rotation=45)
+    plt.legend(title=hue_col)
+    plt.grid(True)
+    plt.show()
+
+def plot_box_premium_by_vehicle(df, vehicle_col, premium_col):
+    plt.figure(figsize=(12, 6))
+    sns.boxplot(x=vehicle_col, y=premium_col, data=df, palette='Set2')
+    plt.title(f'Box Plot of {premium_col} by {vehicle_col}')
+    plt.xticks(rotation=45)
+    plt.xlabel(vehicle_col)
+    plt.ylabel(premium_col)
+    plt.grid(True)
+    plt.show()
+
+
