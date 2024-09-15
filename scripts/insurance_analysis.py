@@ -4,8 +4,6 @@ import seaborn as sns
 import numpy as np
 
 
-
-
 def handle_missing_values(df):
     # Fill missing values for categorical columns with 'Unknown' or mode
     categorical_columns = ['Bank', 'AccountType', 'MaritalStatus', 'Gender', 'VehicleType', 'make', 'Model',
