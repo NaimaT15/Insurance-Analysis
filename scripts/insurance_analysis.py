@@ -81,39 +81,53 @@ def plot_correlation_matrix(df, numerical_columns):
     plt.title('Correlation Matrix')
     plt.show()
 
-def plot_cover_type_trends(df, geo_col, cover_col):
-    plt.figure(figsize=(12, 6))
+def plot_cover_type_trends(df, geo_col, cover_col, step=20):
+    plt.figure(figsize=(14, 6))
     sns.countplot(x=geo_col, hue=cover_col, data=df, palette='Set2')
     plt.title(f'Comparison of {cover_col} across {geo_col}')
-    plt.xticks(rotation=45)
+    
+    # Limit the number of x-axis labels shown
+    ticks = range(0, len(df[geo_col].unique()), step)
+    plt.xticks(ticks, df[geo_col].unique()[ticks], rotation=45)
+    
     plt.xlabel(geo_col)
     plt.ylabel('Count')
     plt.legend(title=cover_col)
     plt.grid(True)
+    plt.tight_layout()
     plt.show()
 
-def plot_premium_trends(df, geo_col, premium_col):
-    plt.figure(figsize=(12, 6))
+def plot_premium_trends(df, geo_col, premium_col, step=20):
+    plt.figure(figsize=(14, 6))
     sns.boxplot(x=geo_col, y=premium_col, data=df, palette='Set1')
     plt.title(f'Distribution of {premium_col} across {geo_col}')
-    plt.xticks(rotation=45)
+    
+    # Limit the number of x-axis labels shown
+    ticks = range(0, len(df[geo_col].unique()), step)
+    plt.xticks(ticks, df[geo_col].unique()[ticks], rotation=45)
+    
     plt.xlabel(geo_col)
     plt.ylabel(premium_col)
     plt.grid(True)
+    plt.tight_layout()
     plt.show()
 
-def plot_auto_make_trends(df, geo_col, make_col):
-    plt.figure(figsize=(12, 6))
+def plot_auto_make_trends(df, geo_col, make_col, step=20):
+    plt.figure(figsize=(14, 6))
     sns.countplot(x=geo_col, hue=make_col, data=df, palette='Set3')
     plt.title(f'Comparison of {make_col} across {geo_col}')
-    plt.xticks(rotation=45)
+    
+    # Limit the number of x-axis labels shown
+    ticks = range(0, len(df[geo_col].unique()), step)
+    plt.xticks(ticks, df[geo_col].unique()[ticks], rotation=45)
+    
     plt.xlabel(geo_col)
     plt.ylabel('Count')
     plt.legend(title=make_col)
     plt.grid(True)
+    plt.tight_layout()
     plt.show()
-
-
+    
 def plot_outliers_boxplot(df, numerical_columns):
     for col in numerical_columns:
         plt.figure(figsize=(8, 6))
@@ -133,18 +147,37 @@ def plot_correlation_heatmap(df):
     sns.heatmap(corr_matrix, annot=True, cmap='coolwarm', vmin=-1, vmax=1, center=0)
     plt.title('Correlation Heatmap of Numerical Features')
     plt.show()
-
-def plot_stacked_bar(df, x_col, hue_col):
-    plt.figure(figsize=(12, 6))
+def plot_stacked_bar(df, x_col, hue_col, step=20):
+    """
+    Plots a stacked bar chart with limited x-axis labels to avoid overlapping.
+    """
+    plt.figure(figsize=(14, 8))
+    
+    # Group by x_col and hue_col, stack the bars
     df_grouped = df.groupby([x_col, hue_col]).size().unstack().fillna(0)
-    df_grouped.plot(kind='bar', stacked=True, colormap='Set3', figsize=(12, 8))
-    plt.title(f'Distribution of {hue_col} Across {x_col}')
-    plt.xlabel(x_col)
-    plt.ylabel('Count')
-    plt.xticks(rotation=45)
-    plt.legend(title=hue_col)
+    
+    df_grouped.plot(kind='bar', stacked=True, colormap='Set3', figsize=(14, 8))
+
+    # Set plot title and labels
+    plt.title(f'Distribution of {hue_col} Across {x_col}', fontsize=16)
+    plt.xlabel(x_col, fontsize=12)
+    plt.ylabel('Count', fontsize=12)
+    
+    # Set x-ticks to show every nth PostalCode to avoid clutter
+    ticks = range(0, len(df_grouped.index), step)
+    plt.xticks(ticks, df_grouped.index[ticks], rotation=45, ha='right', fontsize=10)
+    
+    # Add legend and grid
+    plt.legend(title=hue_col, fontsize=10)
     plt.grid(True)
+    
+    # Adjust layout to prevent label overlapping
+    plt.tight_layout()
+    
+    # Show plot
     plt.show()
+
+
 
 def plot_box_premium_by_vehicle(df, vehicle_col, premium_col):
     plt.figure(figsize=(12, 6))
